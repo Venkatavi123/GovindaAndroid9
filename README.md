@@ -1,22 +1,30 @@
-# GOVINDA Android starter project
+# GOVINDA Android
 
-A native Android starter app inspired by the requested clipboard/link workflow, with a devotional saffron, cream, and maroon design.
+A lightweight native Android app for pasting, editing, copying, and sharing text or links. UI colors use a devotional saffron, gold, and dark-maroon palette.
 
-## Included
-- Manual paste from the Android clipboard
-- Clipboard refresh/listener while the app is visible (Android may restrict clipboard reads; this is not background monitoring)
-- Copy edited text to clipboard
-- Share text or links using Android's share sheet
-- Simple devotional GOVINDA-themed interface
+## Build in GitHub Actions
 
-## Build
-1. Install Android Studio (recent stable version) and Android SDK Platform 35.
-2. Open this folder in Android Studio.
-3. Allow Gradle sync to complete.
-4. Choose **Build > Build Bundle(s) / APK(s) > Build APK(s)**.
-5. Android Studio will show the generated APK location.
+1. Upload the **contents** of this folder to the root of your GitHub repository (`GovindaAndroid` or `GovindaAndroid9`).
+2. Ensure `.github/workflows/android.yml` is at the repository root.
+3. Open **Actions** and run **Android CI** (or push to `main`/`master`).
+4. Download the `govinda-debug-apk` artifact from a successful run.
 
-## Notes
-- This is a starter implementation, not a verified clone of every behavior in the reference APK.
-- Android restricts background clipboard access for privacy. Clipboard changes are handled while the app is in use, and manual paste is available.
-- Package ID: `com.govinda.app`; app label: `GOVINDA`.
+## Build locally
+
+Requirements: JDK 17, Android SDK platform 35 and Gradle 8.9.
+
+```bash
+gradle --no-daemon :app:assembleDebug --stacktrace
+```
+
+APK output: `app/build/outputs/apk/debug/app-debug.apk`.
+
+## Build fixes included
+
+- Android Gradle Plugin is explicitly versioned (`8.7.3`) in the root `build.gradle`.
+- Plugin repositories are declared in `settings.gradle` (`google()`, `mavenCentral()`, `gradlePluginPortal()`).
+- `:app` is included and the app module has its own Android plugin/configuration.
+- GitHub Actions workflow is correctly placed under `.github/workflows/` and uses Gradle 8.9 with JDK 17.
+- Uses a dependency-light Java implementation, avoiding Kotlin plugin/version resolution and third-party UI libraries.
+
+Clipboard behavior is intentionally limited to when the app is open, in line with Android privacy restrictions. A build cannot be verified in this environment because Android SDK/Gradle dependencies are not available here; GitHub Actions provides the build check.
